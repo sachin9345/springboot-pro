@@ -1,14 +1,13 @@
-# Use OpenJDK base image
 FROM eclipse-temurin:17-jdk
 
 # Set working directory
 WORKDIR /app
 
-# Copy code
+# Copy everything into the image
 COPY . .
 
-# Build the application
-RUN ./mvnw package -DskipTests
+# Make mvnw executable and build the JAR
+RUN chmod +x mvnw && ./mvnw clean package -DskipTests
 
-# Run the app
-CMD ["java", "-jar", "target/springboot-pro-0.0.1-SNAPSHOT.jar"]
+# Run the jar file (auto-detects .jar in /target)
+CMD ["sh", "-c", "java -jar target/*.jar"]
